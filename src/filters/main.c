@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "../imagelib/image.h"
+#include "extras.h"
 
 
 int main(int argc, char** argv)
@@ -15,6 +16,11 @@ int main(int argc, char** argv)
     // Cargamos la imagen original desde el archivo
     Image* image = img_png_read_from_file(argv[1]);
 
+
+    show_matriz(image);
+    printf("\n");
+    int** matriz = matrix_init(image);
+    
     /* ------------- POR IMPLEMENTAR -------------- */
     /* Aqui debes crear el MaxTree de la imagen.    */
 
