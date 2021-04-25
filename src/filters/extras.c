@@ -29,6 +29,13 @@ void show_matriz(Image* image){
     
 }
 
+// int* escala(Image* image){
+//     int lista[127];
+//     for(int i=0; i<image->pixel_count; i++){
+        
+//     }
+// }
+
 
 
 
