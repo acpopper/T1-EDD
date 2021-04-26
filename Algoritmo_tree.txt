@@ -1,4 +1,4 @@
-Obtener escala de todos los grises presentes.
+Obtener escala de todos los grises presentes. CHECK
 crear clase nodo y pixel.
 0. Creo un nodo y pongo todos los pixeles.
 1. voy al siguiente gris, encuentro el primer pixel, lo pongo en un nuevo nodo, y tambien a los vecinos.

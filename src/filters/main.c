@@ -15,14 +15,9 @@ int main(int argc, char** argv)
 
     // Cargamos la imagen original desde el archivo
     Image* image = img_png_read_from_file(argv[1]);
-
-    for(int i=0;i<250000;i++){
-        printf("%i",i);
-    }
-
-    // show_matriz(image);
-    // printf("\n");
-    // int** matriz = matrix_init(image);
+    
+    
+    int* escala = generar_escala(image);
     
     /* ------------- POR IMPLEMENTAR -------------- */
     /* Aqui debes crear el MaxTree de la imagen.    */
