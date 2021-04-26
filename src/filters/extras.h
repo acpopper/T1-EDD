@@ -25,3 +25,4 @@ void show_matriz(Image* image);
 bool se_repite_numero(int* arreglo, int n, int num);
 int* generar_escala(Image* image, int* c);
 void imprimir_arreglo(int* arr, int n);
+Nodo* armar_arbol(Image* image);

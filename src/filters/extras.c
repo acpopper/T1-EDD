@@ -72,6 +72,7 @@ int* generar_escala(Image* image, int* c)
     int* escala = calloc(n, sizeof(int));
     int contador=0;
     
+    // armar lista sin repetidos
     for(int i=1; i<n;i++){
         if(!se_repite_numero(escala, contador, arr[i])){
             escala[contador]=arr[i];
@@ -83,7 +84,7 @@ int* generar_escala(Image* image, int* c)
         new[i]=escala[i];
     }
     
-    
+    //ordenar 
     for(int i = 1; i < contador; i++) {
         int numero = new[i];
         int j = i - 1;
@@ -111,7 +112,35 @@ void imprimir_arreglo(int* arr, int n){
 }
 
 
+Pixel* hallar_vecinos(int** matrix){
+    // seguir con esto
+}
 
+Nodo* armar_arbol(Image* image){
+    int* arr = image->pixels;
+    int pixeles_totales = image->pixel_count;
+    int h = image->height;
+    int w = image->width;
+
+    int** matriz=matrix_init(image);
+
+    int n_escala;
+    int* escala = generar_escala(image, &n_escala);
+
+    for(int i=0;i<h;i++){
+        for(int j=0;j<w;j++){
+            printf("%i ", matriz[i][j]);
+        }
+        printf("\n");
+    }
+    
+    // for(int i=0; i<n_escala;i++){
+    //  for(int p=0; p<pixeles_totales; p++){
+         
+    //  }   
+    // }
+    return nodo_init(3);
+}
 
  
 

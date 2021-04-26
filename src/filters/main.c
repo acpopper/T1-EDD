@@ -16,10 +16,9 @@ int main(int argc, char** argv)
     // Cargamos la imagen original desde el archivo
     Image* image = img_png_read_from_file(argv[1]);
     
-    int n_escala;
-    int* escala = generar_escala(image, &n_escala);
     
     
+    Nodo* root = armar_arbol(image);
 
     // Creamos una nueva imagen de igual tamaño, para el output
     Image* new_img = calloc(1, sizeof(Image));

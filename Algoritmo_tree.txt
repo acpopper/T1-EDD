@@ -12,3 +12,9 @@ a otro nodo del mismo umbral que el pixel actual, entonces los pongo en un nuevo
 se borran todos los del nodo actual del mayor y el mayor se vuelve el padre del actual, y el actual un hijo.Si no,
 se repite para umbrales mayores. 
 6. Repetir 5 para cada nodo.
+
+
+O, implementar:
+-una funcion que encuentre vecinos de una posicion (retorne el pixel posicion y sus vecinos)
+-y otra que tome todos los vecinos encontrados en esta iteracion (iterar por umbral) y arme los nodos (o por ultimo
+los vecindarios)
