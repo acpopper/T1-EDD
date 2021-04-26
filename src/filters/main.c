@@ -16,11 +16,10 @@ int main(int argc, char** argv)
     // Cargamos la imagen original desde el archivo
     Image* image = img_png_read_from_file(argv[1]);
     
+    int n_escala;
+    int* escala = generar_escala(image, &n_escala);
     
-    int* escala = generar_escala(image);
     
-    /* ------------- POR IMPLEMENTAR -------------- */
-    /* Aqui debes crear el MaxTree de la imagen.    */
 
     // Creamos una nueva imagen de igual tamaño, para el output
     Image* new_img = calloc(1, sizeof(Image));

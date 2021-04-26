@@ -6,6 +6,30 @@
 #include "extras.h"
 
 
+Nodo* nodo_init(int U)
+{
+  Nodo* nodo = malloc(sizeof(Nodo));
+  *nodo = (Nodo) {
+    .U=U,
+    .n_pixeles=0,
+    .head=NULL,
+    .parent=NULL
+  };
+  return nodo;
+}
+
+Pixel* pixel_init(int U, int pos)
+{
+  Pixel* pixel = malloc(sizeof(Pixel));
+  *pixel = (Pixel) {
+    .umbral=U,
+    .pos=pos,
+    .next=NULL
+  };
+  return pixel;
+}
+
+
 int** matrix_init(Image* image){
     int cont = 0;
     int** matrix = calloc(image->height, sizeof(int*));
@@ -41,7 +65,7 @@ bool se_repite_numero(int* arreglo, int n, int num){
     return false;
 }
 
-int* generar_escala(Image* image)
+int* generar_escala(Image* image, int* c)
 {   
     int n=image->pixel_count;
     int* arr=image->pixels;
@@ -75,6 +99,7 @@ int* generar_escala(Image* image)
     }
     
     free(escala);
+    *c = contador;
     return new2;
 }
  
@@ -84,6 +109,8 @@ void imprimir_arreglo(int* arr, int n){
 
     printf("\n");
 }
+
+
 
 
  
