@@ -12,23 +12,22 @@ Nodo* nodo_init(int U)
   *nodo = (Nodo) {
     .U=U,
     .n_pixeles=0,
+    .parent=NULL,
     .head=NULL,
-    .parent=NULL
+    .next=NULL
   };
   return nodo;
 }
 
-Pixel* pixel_init(int U, int pos)
+Pixel* pixel_init(int pos)
 {
   Pixel* pixel = malloc(sizeof(Pixel));
   *pixel = (Pixel) {
-    .umbral=U,
     .pos=pos,
-    .next=NULL
+    .next= NULL
   };
   return pixel;
 }
-
 
 int** matrix_init(Image* image){
     int cont = 0;
@@ -94,6 +93,7 @@ int* generar_escala(Image* image, int* c)
         }
         new[j + 1] = numero;
     }
+    // paso la lista de tonos a calloc
     int* new2 = calloc(contador, sizeof(int));
     for(int i=0; i<contador; i++){
         new2[i]=new[i];
@@ -111,34 +111,84 @@ void imprimir_arreglo(int* arr, int n){
     printf("\n");
 }
 
-
-Pixel* hallar_vecinos(int** matrix){
-    // seguir con esto
+void pos_vecinos(int** matrix, int w, int h, int posi, int posj, int** obj){
+    int vecinos[5];
+    int offsetx[]={1, 0, -1, 0};
+    int offsety[]={0, 1, 0, -1};
+    
+    for (int t = 0; t < 4; t++)
+    {   printf("iter %i\n", t);
+        if((posi+offsetx[t])<0 || (posi+offsetx[t])>(w-1) || (posj+offsety[t])<0 || (posj+offsety[t])>(h-1)){
+            vecinos[t] = -1;
+            printf("if vecino %i\n", vecinos[t]);
+        } 
+        else if(matrix[posi][posj]<=matrix[posi+offsetx[t]][posj+offsety[t]]){
+                vecinos[t]=matrix[posi+offsetx[t]][posj+offsety[t]];
+                printf("elif vecino %i\n", matrix[posi+offsetx[t]][posj+offsety[t]]);
+        }
+        else{
+            vecinos[t] = -1;
+            printf("else vecino %i\n", matrix[posi+offsetx[t]][posj+offsety[t]]);
+        }
+    }
+    vecinos[4]=matrix[posi][posj];
+    
+    for(int p=0;p<5;p++){
+        printf("%i ", vecinos[p]);
+    }
+    printf("\n");
+    *obj= vecinos;
 }
+
+
 
 Nodo* armar_arbol(Image* image){
     int* arr = image->pixels;
-    int pixeles_totales = image->pixel_count;
+    int pixel_count = image->pixel_count;
     int h = image->height;
     int w = image->width;
 
-    int** matriz=matrix_init(image);
+    int** matrix=matrix_init(image);
 
     int n_escala;
     int* escala = generar_escala(image, &n_escala);
 
     for(int i=0;i<h;i++){
         for(int j=0;j<w;j++){
-            printf("%i ", matriz[i][j]);
+            printf("%i ", matrix[i][j]);
         }
         printf("\n");
     }
     
-    // for(int i=0; i<n_escala;i++){
-    //  for(int p=0; p<pixeles_totales; p++){
-         
+    int* cosa;
+    printf("matriz sola %i\n", matrix[9][1]);
+    pos_vecinos(matrix, w, h, 9, 0, &cosa);
+    
+    
+    
+    // Nodo** todos_los_nodos;
+    // inicio el nodo raiz (todos los pixeles)
+    // Nodo* root=nodo_init(escala[0]);
+    // int c_temporal = 0;
+    // for(int i=0; i<pixel_count;i++){
+    //     if(arr[i]==escala[0]){
+    //         root->pix[c_temporal]=i;
+    //         c_temporal+=1;
+    //     }
+    // }
+    // todos_los_nodos[0]= root;
+    // itero sobre el resto de los tonos y voy llenando los niveles
+    // for(int t=0; t<n_escala;t++){
+    // int tono = escala[t];
+    //  for(int j=0; j<h; j++){
+    //     for(int i=0; i<w; i++){
+    //      if(matrix[i][j]==tono){
+
+    //      }
+    //     }
     //  }   
     // }
+
     return nodo_init(3);
 }
 
