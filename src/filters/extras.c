@@ -39,16 +39,17 @@ int** matrix_init(Image* image){
             cont+=1;
         }
     }
+    
     return matrix;
 } 
 
-void show_matriz(Image* image){
+void show_matrix(int** matrix, int h, int w){
     
-    for(int i=0; i<image->pixel_count;i++){
-        printf("%i, ", image->pixels[i]);
-        if(!((i+1)%image->width&&i!=(image->pixel_count-1))){
-            printf("\n");
+    for(int i=0;i<h;i++){
+        for(int j=0;j<w;j++){
+            printf("%i ", matrix[i][j]);
         }
+        printf("\n");
     }
     
 }
@@ -111,36 +112,40 @@ void imprimir_arreglo(int* arr, int n){
     printf("\n");
 }
 
-void pos_vecinos(int** matrix, int w, int h, int posi, int posj, int** obj){
-    int vecinos[5];
+
+
+void pos_vecinos(int** matrix, int w, int h, int posi, int posj,int **array, int length)
+{
+    free(*array);
+
+    *array = malloc(length * sizeof(int));
+
     int offsetx[]={1, 0, -1, 0};
     int offsety[]={0, 1, 0, -1};
     
-    for (int t = 0; t < 4; t++)
-    {   printf("iter %i\n", t);
-        if((posi+offsetx[t])<0 || (posi+offsetx[t])>(w-1) || (posj+offsety[t])<0 || (posj+offsety[t])>(h-1)){
-            vecinos[t] = -1;
-            printf("if vecino %i\n", vecinos[t]);
+    for (int t = 0; t < 4; t++){
+    //  printf("iter %i\n", t);
+        // printf("x %i y %i\n", (posi+offsetx[t]), (posj+offsety[t]));
+        if((posi+offsetx[t])<0 || (posi+offsetx[t])>(h-1) || (posj+offsety[t])<0 || (posj+offsety[t])>(w-1)){
+            (*array)[t] = -1;
+            // printf("if vecino %i\n", (*array)[t]);
         } 
         else if(matrix[posi][posj]<=matrix[posi+offsetx[t]][posj+offsety[t]]){
-                vecinos[t]=matrix[posi+offsetx[t]][posj+offsety[t]];
-                printf("elif vecino %i\n", matrix[posi+offsetx[t]][posj+offsety[t]]);
+                (*array)[t]=matrix[posi+offsetx[t]][posj+offsety[t]];
+                // printf("elif vecino %i\n", matrix[posi+offsetx[t]][posj+offsety[t]]);
         }
         else{
-            vecinos[t] = -1;
-            printf("else vecino %i\n", matrix[posi+offsetx[t]][posj+offsety[t]]);
+            (*array)[t] = -1;
+            // printf("else vecino %i\n", matrix[posi+offsetx[t]][posj+offsety[t]]);
         }
     }
-    vecinos[4]=matrix[posi][posj];
+    (*array)[4]=matrix[posi][posj];
     
-    for(int p=0;p<5;p++){
-        printf("%i ", vecinos[p]);
-    }
-    printf("\n");
-    *obj= vecinos;
+    // for(int p=0;p<5;p++){
+    //     printf("%i ", (*array)[p]);
+    // }
+    // printf("\n");
 }
-
-
 
 Nodo* armar_arbol(Image* image){
     int* arr = image->pixels;
@@ -162,7 +167,7 @@ Nodo* armar_arbol(Image* image){
     
     int* cosa;
     printf("matriz sola %i\n", matrix[9][1]);
-    pos_vecinos(matrix, w, h, 9, 0, &cosa);
+    // pos_vecinos(matrix, w, h, 9, 0, &cosa);
     
     
     

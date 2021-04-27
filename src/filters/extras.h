@@ -23,9 +23,10 @@ struct pixel {
 
 
 int** matrix_init(Image* image);
-void show_matriz(Image* image);
+void show_matrix(int** matrix, int h, int w);
 bool se_repite_numero(int* arreglo, int n, int num);
 int* generar_escala(Image* image, int* c);
 void imprimir_arreglo(int* arr, int n);
 Nodo* armar_arbol(Image* image);
-void pos_vecinos(int** matrix, int w, int h, int posi, int posj, int** obj);
+void pos_vecinos(int** matrix, int w, int h, int posi, int posj,int **array, int length);
+void change(int** matrix, int w, int h, int posi, int posj,int **array, int length);

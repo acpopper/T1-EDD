@@ -17,8 +17,18 @@ int main(int argc, char** argv)
     Image* image = img_png_read_from_file(argv[1]);
     
     
+    int** m=matrix_init(image);
+    show_matrix(m, image->height, image->width);
+    int* vecinos=NULL;
+    // pos_vecinos(m, image->width, image->height, 0, 0, &obj);
+    pos_vecinos(m, image->width, image->height, 10, 9, &vecinos, 5);
     
-    Nodo* root = armar_arbol(image);
+    printf("obj \n");
+    for(int p=0;p<5;p++){
+        printf("%i ", vecinos[p]);
+    }
+    printf("\n");
+    // Nodo* root = armar_arbol(image);
 
     // Creamos una nueva imagen de igual tamaño, para el output
     Image* new_img = calloc(1, sizeof(Image));
