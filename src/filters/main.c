@@ -16,15 +16,24 @@ int main(int argc, char** argv)
     // Cargamos la imagen original desde el archivo
     Image* image = img_png_read_from_file(argv[1]);
     
-    
+    // obtengo matriz con coordenadas cart.
     int** m=matrix_init(image);
     show_matrix(m, image->height, image->width);
-    // // como instanciar vecinos:
-    // int* vecinos=NULL;
-    // pos_vecinos(m, image->width, image->height, 0, 0, &vecinos, 5);
     
+    // obtengo escala de los tonos que hay en la foto
+    int n_escala;
+    int* escala = generar_escala(image, &n_escala);
+
+    // nodo inicial, agrego todos los pixeles como LL
+    Nodo* root = nodo_init(escala[0]);
+    // agrego root a la lista de todos los nodos por haber
+    List* all_nodos=list_init(root);
+    for(int p=0; p<image->pixel_count;p++){
+        add_pixel_to_nodo(p, root);
+    }
     
-    // Nodo* root = armar_arbol(image);
+    show_full_list(all_nodos);
+    printf("pixeles totales: %i\n", all_nodos->value->n_pixeles);
 
     // Creamos una nueva imagen de igual tamaño, para el output
     Image* new_img = calloc(1, sizeof(Image));

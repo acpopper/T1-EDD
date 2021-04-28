@@ -11,7 +11,7 @@
 
 // como instanciar vecinos de un pixel
 // int* vecinos=NULL;
-// pos_vecinos(matrix, w, h, i, j, &vecinos, 5);
+// pos_vecinos(matrix, w, h, i, j, &vecinos);
 
 Nodo* nodo_init(int U)
 {
@@ -126,20 +126,35 @@ void add_pixel_to_nodo(int pos, Nodo* nodo){
     }
     else{
         Pixel* current = nodo->pix;
-        while (current->next){
+        while (current->next && current->pos!=pos){
             current=current->next;
         }
-        current->next=pixel;
+        if(current->pos!=pos){
+            current->next=pixel;
+        }
+            
+    }
+    nodo->n_pixeles+=1;
+}
+
+void show_full_list(List* all_nodos){
+    List* current_nodo = all_nodos;
+    while(current_nodo){
+        printf("Umbral del nodo: %i\n", current_nodo->value->U);
+        Pixel* current_pixel = current_nodo->value->pix;
+        while(current_pixel){
+            printf("    P: %i\n", current_pixel->pos);
+            current_pixel = current_pixel->next;
+        }
+        current_nodo=current_nodo->next;
     }
 }
 
-
-
-void pos_vecinos(int** matrix, int w, int h, int posi, int posj,int **array, int length)
+void pos_vecinos(int** matrix, int w, int h, int posi, int posj,int **array)
 {
     free(*array);
     
-    *array = malloc(length * sizeof(int));
+    *array = malloc(5 * sizeof(int));
 
     int offsetx[]={1, 0, -1, 0};
     int offsety[]={0, 1, 0, -1};
@@ -182,14 +197,14 @@ List* list_init(Nodo* nodo)
   return list;
 }
 
-void list_append(List* list, int umbral)
+void list_append(List* list, Nodo* nodo)
 {
   List *last = list;
   while (last->next) {
     last = last->next;
   }
 
-  List *new_list = list_init(nodo_init(umbral));
+  List *new_list = list_init(nodo);
 
   last->next = new_list;
 }
@@ -216,7 +231,7 @@ bool is_algun_vecino_in_nodo(int* pos, Nodo* nodo){
     return false;
 }
 // reviso si está el pixel o alguno de sus vecinos en alguno de los nodos con su mismo umbral
-bool is_algun_vecino_in_all_no2(int* pos, List* all_nodos, int umbral){
+Nodo* is_algun_vecino_in_all_no2(int* pos, List* all_nodos, int umbral){
     List* nodo_current = all_nodos;
     while(nodo_current){
         if(nodo_current->value->U==umbral){
@@ -225,7 +240,7 @@ bool is_algun_vecino_in_all_no2(int* pos, List* all_nodos, int umbral){
                 if(pos[i]>=0){
                     while(current_pix){
                         if(current_pix->pos==pos[i]){
-                            return true;
+                            return nodo_current->value;
                         }
                         current_pix=current_pix->next;
                     }
@@ -234,5 +249,31 @@ bool is_algun_vecino_in_all_no2(int* pos, List* all_nodos, int umbral){
         }
         nodo_current=nodo_current->next;
     }
-    return false;
+    return NULL;
+}
+
+void armar_lista_maestra(int* escala, int n_escala, List* all_nodos, int** matrix, int w, int h){
+    for(int e=1; e<n_escala; e++){
+        for(int i=0; i<h; i++){
+            for(int j=0; j<w; j++){
+                if(matrix[i][j]==e){
+                    int* vecinos=NULL;
+                    pos_vecinos(matrix, w, h, i, j, &vecinos);
+                    Nodo* chosen = is_algun_vecino_in_all_no2(vecinos, all_nodos, e);
+                    if(chosen){
+                        for(int v=0; v<5; v++){
+                            add_pixel_to_nodo(vecinos[v], chosen);
+                        }
+                    }
+                    else{
+                        Nodo* new = nodo_init(e);
+                        for(int v=0; v<5; v++){
+                            add_pixel_to_nodo(vecinos[v], new);
+                        }
+                        list_append(all_nodos, new);
+                    }
+                }
+            }
+        }
+    }
 }
