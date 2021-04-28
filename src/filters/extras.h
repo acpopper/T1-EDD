@@ -39,3 +39,4 @@ List* list_init(Nodo* value);
 void list_append(List* list, Nodo* value);
 void list_destroy(List *list);
 void add_pixel_to_nodo(int pos, Nodo* nodo);
+bool is_pixel_in_nodo(int pos, Nodo* nodo);

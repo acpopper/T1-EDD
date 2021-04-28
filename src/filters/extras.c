@@ -219,26 +219,24 @@ void agregar_nodos_nivel(int umbral, int** matrix, int w, int h, List* todos_los
     // recorro matriz
     for(int i=0; i<h;i++){
         for(int j=0; j<w; j++){
+            
             // si el valor del pixel es igual al umbral, hago lista con vecinos y él
             if(matrix[i][j]==umbral){
                 int* vecinos=NULL;
                 pos_vecinos(matrix, w, h, i, j, &vecinos, 5);
+                
                 // revisar si hay por lo menos 1 de los vecinos en un nodo de umbral "umbral". Si no se crea y se agrega
-                check_if_in_nodo(vecinos, todos_los_nodos, umbral);
+                
             }
         }
     }
 }
 
-bool is_at_least_one_pixel_in_nodo(int* vecinos, Nodo* nodo){
-    for(int i=0; i<5; i++){
-        if(vecinos[i]>=0){
-            Pixel* current=nodo->pix;
-            while(current){
-                if(current->pos==vecinos[i]){
-                    return true;
-                }
-            }
+bool is_pixel_in_nodo(int pos, Nodo* nodo){
+    Pixel* current=nodo->pix;
+    while(current){
+        if(current->pos==pos){
+            return true;
         }
     }
     return false;
