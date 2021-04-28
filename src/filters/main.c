@@ -19,15 +19,11 @@ int main(int argc, char** argv)
     
     int** m=matrix_init(image);
     show_matrix(m, image->height, image->width);
-    int* vecinos=NULL;
-    // pos_vecinos(m, image->width, image->height, 0, 0, &obj);
-    pos_vecinos(m, image->width, image->height, 0, 0, &vecinos, 5);
+    // // como instanciar vecinos:
+    // int* vecinos=NULL;
+    // pos_vecinos(m, image->width, image->height, 0, 0, &vecinos, 5);
     
-    printf("obj \n");
-    for(int p=0;p<5;p++){
-        printf("%i ", vecinos[p]);
-    }
-    printf("\n");
+    
     // Nodo* root = armar_arbol(image);
 
     // Creamos una nueva imagen de igual tamaño, para el output

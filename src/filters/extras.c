@@ -14,7 +14,8 @@ Nodo* nodo_init(int U)
     .n_pixeles=0,
     .parent=NULL,
     .head=NULL,
-    .next=NULL
+    .next=NULL,
+    .pix=NULL
   };
   return nodo;
 }
@@ -112,6 +113,20 @@ void imprimir_arreglo(int* arr, int n){
     printf("\n");
 }
 
+void add_pixel_to_nodo(int pos, Nodo* nodo){
+    Pixel* pixel = pixel_init(pos);
+    if(!nodo->pix){
+        nodo->pix=pixel;
+    }
+    else{
+        Pixel* current = nodo->pix;
+        while (current->next){
+            current=current->next;
+        }
+        current->next=pixel;
+    }
+}
+
 
 
 void pos_vecinos(int** matrix, int w, int h, int posi, int posj,int **array, int length)
@@ -149,7 +164,7 @@ void pos_vecinos(int** matrix, int w, int h, int posi, int posj,int **array, int
 }
 
 Nodo* armar_arbol(Image* image){
-    int* arr = image->pixels;
+    int* pixels = image->pixels;
     int pixel_count = image->pixel_count;
     int h = image->height;
     int w = image->width;
@@ -159,45 +174,72 @@ Nodo* armar_arbol(Image* image){
     int n_escala;
     int* escala = generar_escala(image, &n_escala);
 
-    for(int i=0;i<h;i++){
-        for(int j=0;j<w;j++){
-            printf("%i ", matrix[i][j]);
-        }
-        printf("\n");
-    }
-    
-    int* cosa;
-    printf("matriz sola %i\n", matrix[9][1]);
-    // pos_vecinos(matrix, w, h, 9, 0, &cosa);
-    
-    
-    
-    // Nodo** todos_los_nodos;
-    // inicio el nodo raiz (todos los pixeles)
-    // Nodo* root=nodo_init(escala[0]);
-    // int c_temporal = 0;
-    // for(int i=0; i<pixel_count;i++){
-    //     if(arr[i]==escala[0]){
-    //         root->pix[c_temporal]=i;
-    //         c_temporal+=1;
-    //     }
-    // }
-    // todos_los_nodos[0]= root;
-    // itero sobre el resto de los tonos y voy llenando los niveles
-    // for(int t=0; t<n_escala;t++){
-    // int tono = escala[t];
-    //  for(int j=0; j<h; j++){
-    //     for(int i=0; i<w; i++){
-    //      if(matrix[i][j]==tono){
+    Nodo* root = nodo_init(escala[0]);
+    List* todos_los_nodos=list_init(root);
 
-    //      }
-    //     }
-    //  }   
-    // }
-
+   
     return nodo_init(3);
 }
 
- 
 
+List* list_init(Nodo* nodo)
+{
+  List* list = malloc(sizeof(List));
 
+  *list = (List) {
+    .value = nodo,
+    .next = NULL, 
+  };
+  return list;
+}
+
+void list_append(List* list, Nodo* value)
+{
+  List *last = list;
+  while (last->next) {
+    last = last->next;
+  }
+
+  List *new_list = list_init(value);
+
+  last->next = new_list;
+}
+
+// editar para que se destruyan los nodos
+void list_destroy(List *list)
+{
+  if (list->next)
+  {
+    list_destroy(list->next);
+  }
+  free(list);
+}
+
+void agregar_nodos_nivel(int umbral, int** matrix, int w, int h, List* todos_los_nodos){
+    // recorro matriz
+    for(int i=0; i<h;i++){
+        for(int j=0; j<w; j++){
+            // si el valor del pixel es igual al umbral, hago lista con vecinos y él
+            if(matrix[i][j]==umbral){
+                int* vecinos=NULL;
+                pos_vecinos(matrix, w, h, i, j, &vecinos, 5);
+                // revisar si hay por lo menos 1 de los vecinos en un nodo de umbral "umbral". Si no se crea y se agrega
+                check_if_in_nodo(vecinos, todos_los_nodos, umbral);
+            }
+        }
+    }
+}
+
+bool is_at_least_one_pixel_in_nodo(int* vecinos, Nodo* nodo){
+    for(int i=0; i<5; i++){
+        if(vecinos[i]>=0){
+            Pixel* current=nodo->pix;
+            while(current){
+                if(current->pos==vecinos[i]){
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
