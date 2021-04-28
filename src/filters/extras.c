@@ -5,6 +5,13 @@
 #include "../imagelib/image.h"
 #include "extras.h"
 
+//como instanciar escala de imagen:
+// int n_escala;
+// int* escala = generar_escala(image, &n_escala);
+
+// como instanciar vecinos de un pixel
+// int* vecinos=NULL;
+// pos_vecinos(matrix, w, h, i, j, &vecinos, 5);
 
 Nodo* nodo_init(int U)
 {
@@ -54,7 +61,6 @@ void show_matrix(int** matrix, int h, int w){
     }
     
 }
-
 
 bool se_repite_numero(int* arreglo, int n, int num){
     
@@ -163,23 +169,6 @@ void pos_vecinos(int** matrix, int w, int h, int posi, int posj,int **array, int
     // printf("\n");
 }
 
-Nodo* armar_arbol(Image* image){
-    int* pixels = image->pixels;
-    int pixel_count = image->pixel_count;
-    int h = image->height;
-    int w = image->width;
-
-    int** matrix=matrix_init(image);
-
-    int n_escala;
-    int* escala = generar_escala(image, &n_escala);
-
-    Nodo* root = nodo_init(escala[0]);
-    List* todos_los_nodos=list_init(root);
-
-   
-    return nodo_init(3);
-}
 
 
 List* list_init(Nodo* nodo)
@@ -193,14 +182,14 @@ List* list_init(Nodo* nodo)
   return list;
 }
 
-void list_append(List* list, Nodo* value)
+void list_append(List* list, int umbral)
 {
   List *last = list;
   while (last->next) {
     last = last->next;
   }
 
-  List *new_list = list_init(value);
+  List *new_list = list_init(nodo_init(umbral));
 
   last->next = new_list;
 }
@@ -215,29 +204,35 @@ void list_destroy(List *list)
   free(list);
 }
 
-void agregar_nodos_nivel(int umbral, int** matrix, int w, int h, List* todos_los_nodos){
-    // recorro matriz
-    for(int i=0; i<h;i++){
-        for(int j=0; j<w; j++){
-            
-            // si el valor del pixel es igual al umbral, hago lista con vecinos y él
-            if(matrix[i][j]==umbral){
-                int* vecinos=NULL;
-                pos_vecinos(matrix, w, h, i, j, &vecinos, 5);
-                
-                // revisar si hay por lo menos 1 de los vecinos en un nodo de umbral "umbral". Si no se crea y se agrega
-                
+bool is_algun_vecino_in_nodo(int* pos, Nodo* nodo){
+    Pixel* current=nodo->pix;
+    for(int i=0; i<5;i++){
+        while(current){
+            if(current->pos==pos[i]){
+                return true;
             }
         }
     }
+    return false;
 }
-
-bool is_pixel_in_nodo(int pos, Nodo* nodo){
-    Pixel* current=nodo->pix;
-    while(current){
-        if(current->pos==pos){
-            return true;
+// reviso si está el pixel o alguno de sus vecinos en alguno de los nodos con su mismo umbral
+bool is_algun_vecino_in_all_no2(int* pos, List* all_nodos, int umbral){
+    List* nodo_current = all_nodos;
+    while(nodo_current){
+        if(nodo_current->value->U==umbral){
+            Pixel* current_pix=nodo_current->value->pix;
+            for(int i=0; i<5;i++){
+                if(pos[i]>=0){
+                    while(current_pix){
+                        if(current_pix->pos==pos[i]){
+                            return true;
+                        }
+                        current_pix=current_pix->next;
+                    }
+                }   
+            }
         }
+        nodo_current=nodo_current->next;
     }
     return false;
 }
