@@ -117,7 +117,7 @@ void imprimir_arreglo(int* arr, int n){
 void pos_vecinos(int** matrix, int w, int h, int posi, int posj,int **array, int length)
 {
     free(*array);
-
+    
     *array = malloc(length * sizeof(int));
 
     int offsetx[]={1, 0, -1, 0};
@@ -125,13 +125,13 @@ void pos_vecinos(int** matrix, int w, int h, int posi, int posj,int **array, int
     
     for (int t = 0; t < 4; t++){
     //  printf("iter %i\n", t);
-        // printf("x %i y %i\n", (posi+offsetx[t]), (posj+offsety[t]));
+        printf("x %i y %i\n", (posi+offsetx[t]), (posj+offsety[t]));
         if((posi+offsetx[t])<0 || (posi+offsetx[t])>(h-1) || (posj+offsety[t])<0 || (posj+offsety[t])>(w-1)){
             (*array)[t] = -1;
             // printf("if vecino %i\n", (*array)[t]);
         } 
         else if(matrix[posi][posj]<=matrix[posi+offsetx[t]][posj+offsety[t]]){
-                (*array)[t]=matrix[posi+offsetx[t]][posj+offsety[t]];
+                (*array)[t]=w*(posi+offsetx[t])+(posj+offsety[t]);
                 // printf("elif vecino %i\n", matrix[posi+offsetx[t]][posj+offsety[t]]);
         }
         else{
@@ -139,7 +139,8 @@ void pos_vecinos(int** matrix, int w, int h, int posi, int posj,int **array, int
             // printf("else vecino %i\n", matrix[posi+offsetx[t]][posj+offsety[t]]);
         }
     }
-    (*array)[4]=matrix[posi][posj];
+    printf("x %i y %i\n", posi, posj);
+    (*array)[4]=w*(posi)+(posj);
     
     // for(int p=0;p<5;p++){
     //     printf("%i ", (*array)[p]);

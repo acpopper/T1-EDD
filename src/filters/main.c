@@ -21,7 +21,7 @@ int main(int argc, char** argv)
     show_matrix(m, image->height, image->width);
     int* vecinos=NULL;
     // pos_vecinos(m, image->width, image->height, 0, 0, &obj);
-    pos_vecinos(m, image->width, image->height, 10, 9, &vecinos, 5);
+    pos_vecinos(m, image->width, image->height, 0, 0, &vecinos, 5);
     
     printf("obj \n");
     for(int p=0;p<5;p++){
