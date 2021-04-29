@@ -260,53 +260,11 @@ void list2_destroy(List2 *list)
   free(list);
 }
 
-bool is_algun_vecino_in_nodo(int* pos, Nodo* nodo){
-    Pixel* current=nodo->pix;
-    for(int i=0; i<5;i++){
-        while(current){
-            if(current->pos==pos[i]){
-                return true;
-            }
-        }
-    }
-    return false;
-}
 // reviso si está el pixel o alguno de sus vecinos en alguno de los nodos con su mismo umbral
-Nodo* is_algun_vecino_in_all_no2(int* pos, List* all_nodos, int umbral){
-    List* nodo_current = NULL;
-    if(all_nodos->next){
-        nodo_current = all_nodos->next;
-    }
-    else{
-        nodo_current = NULL;
-    }
-    while(nodo_current){
-        if(nodo_current->value->U==umbral){
-            for(int i=0; i<5;i++){
-                Pixel* current_pix=nodo_current->value->pix;
-                if(pos[i]>=0){
-                    // printf("pix vec %i, pix en nodo %i\n", pos[i], current_pix->pos);
-                    while(current_pix){
-                        if(current_pix->pos==pos[i]){
-                            return nodo_current->value;
-                        }
-                        current_pix=current_pix->next;
-                    }
-                }   
-            }                        
-        }
-        nodo_current=nodo_current->next;
-    }
-    return NULL;
-}
-
 Nodo* is_algun_vecino_in_all_no3(List2* elem, List* all_nodos, int umbral){
     List* nodo_current = NULL;
     if(all_nodos->next){
         nodo_current = all_nodos->next;
-    }
-    else{
-        nodo_current = NULL;
     }
     while(nodo_current){
         if(nodo_current->value->U==umbral){
@@ -318,46 +276,14 @@ Nodo* is_algun_vecino_in_all_no3(List2* elem, List* all_nodos, int umbral){
                         return nodo_current->value;
                     }
                     current_pix=current_pix->next;
-                }                
+                }
+                current_pos=current_pos->next;                
             }                 
         }
         nodo_current=nodo_current->next;
     }
     return NULL;
 }
-
-void armar_lista_maestra(int* escala, int n_escala, List* all_nodos, int** matrix, int w, int h){
-    for(int e=1; e<n_escala; e++){
-        // printf("Revisando umbral %i\n", escala[e]);
-        for(int i=0; i<h; i++){
-            for(int j=0; j<w; j++){
-                if(matrix[i][j]==escala[e]){
-                    // printf("Encontrado pixel, posición [%i][%i]\n", i, j);
-                    int* vecinos=NULL;
-                    pos_vecinos(matrix, w, h, i, j, &vecinos);
-                    Nodo* chosen = is_algun_vecino_in_all_no2(vecinos, all_nodos, escala[e]);
-                    if(chosen){
-                        for(int v=0; v<5; v++){
-                            if(vecinos[v]>=0){
-                                add_pixel_to_nodo(vecinos[v], chosen);
-                            }
-                        }
-                    }
-                    else{
-                        Nodo* new = nodo_init(escala[e]);
-                        for(int v=0; v<5; v++){
-                            if(vecinos[v]>=0){
-                                add_pixel_to_nodo(vecinos[v], new);
-                            }
-                        }
-                        list_append(all_nodos, new);
-                    }
-                }
-            }
-        }
-    }
-}
-
 
 void pos_vecinos_version_pro(int** matrix, int w, int h, int posi, int posj, List2* elem){   
 
@@ -374,9 +300,6 @@ void pos_vecinos_version_pro(int** matrix, int w, int h, int posi, int posj, Lis
                     pos_vecinos_version_pro(matrix, w, h, (posi+offsetx[t]), (posj+offsety[t]), elem);
                 }                
             }
-        else{
-            continue;
-        }
     }
 }
 
@@ -388,11 +311,12 @@ void armar_lista_maestra_version_pro(int* escala, int n_escala, List* all_nodos,
                 if(matrix[i][j]==escala[e]){
                     List2* aux = list2_init(w*i+j);
                     pos_vecinos_version_pro(matrix, w, h, i, j, aux);
-                    Nodo* chosen = is_algun_vecino_in_all_no3(aux, all_nodos, escala[e]);
+                    Nodo* chosen = is_algun_vecino_in_all_no3(aux, all_nodos, escala[e]);                    
                     if(chosen){
                         List2* current = aux;
                         while(current){
                             add_pixel_to_nodo(current->value, chosen);
+                            current=current->next;
                         }                        
                     }
                     else{
@@ -400,6 +324,7 @@ void armar_lista_maestra_version_pro(int* escala, int n_escala, List* all_nodos,
                         List2* current = aux;
                         while(current){
                             add_pixel_to_nodo(current->value, new);
+                            current=current->next;
                         }
                         list_append(all_nodos, new);
                     }
