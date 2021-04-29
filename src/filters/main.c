@@ -37,7 +37,7 @@ int main(int argc, char** argv)
     }
     
     armar_lista_maestra_version_pro(escala, n_escala, all_nodos, matrix, image->width, image->height);
-
+    
     show_full_list(all_nodos);
     
 
