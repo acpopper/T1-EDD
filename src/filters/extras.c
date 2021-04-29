@@ -251,8 +251,7 @@ bool pixel_is_in_list2(List2* list2, int num){
     return false;
 }
 
-// editar para que se destruyan los nodos
-void list_destroy(List *list)
+void list2_destroy(List2 *list)
 {
   if (list->next)
   {
@@ -360,8 +359,7 @@ void armar_lista_maestra(int* escala, int n_escala, List* all_nodos, int** matri
 }
 
 
-void pos_vecinos_version_pro(int** matrix, int w, int h, int posi, int posj, List2* elem)
-{   
+void pos_vecinos_version_pro(int** matrix, int w, int h, int posi, int posj, List2* elem){   
 
     int offsetx[]={1, 0, -1, 0};
     int offsety[]={0, 1, 0, -1};
@@ -392,13 +390,20 @@ void armar_lista_maestra_version_pro(int* escala, int n_escala, List* all_nodos,
                     pos_vecinos_version_pro(matrix, w, h, i, j, aux);
                     Nodo* chosen = is_algun_vecino_in_all_no3(aux, all_nodos, escala[e]);
                     if(chosen){
-                        // agrego vecinos a chosen
+                        List2* current = aux;
+                        while(current){
+                            add_pixel_to_nodo(current->value, chosen);
+                        }                        
                     }
                     else{
                         Nodo* new = nodo_init(escala[e]);
-                        // agrego vecinos a new
+                        List2* current = aux;
+                        while(current){
+                            add_pixel_to_nodo(current->value, new);
+                        }
                         list_append(all_nodos, new);
                     }
+                    list2_destroy(aux);
                 }
             }
         }
