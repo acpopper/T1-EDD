@@ -38,7 +38,7 @@ int main(int argc, char** argv)
     
     armar_lista_maestra(escala, n_escala, all_nodos, matrix, image->width, image->height);
 
-    show_full_list(all_nodos);
+    // show_full_list(all_nodos);
     
 
     // Creamos una nueva imagen de igual tamaño, para el output

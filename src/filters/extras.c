@@ -232,7 +232,13 @@ bool is_algun_vecino_in_nodo(int* pos, Nodo* nodo){
 }
 // reviso si está el pixel o alguno de sus vecinos en alguno de los nodos con su mismo umbral
 Nodo* is_algun_vecino_in_all_no2(int* pos, List* all_nodos, int umbral){
-    List* nodo_current = all_nodos;
+    List* nodo_current = NULL;
+    if(all_nodos->next){
+        nodo_current = all_nodos->next;
+    }
+    else{
+        nodo_current = NULL;
+    }
     while(nodo_current){
         if(nodo_current->value->U==umbral){
             Pixel* current_pix=nodo_current->value->pix;
@@ -254,12 +260,19 @@ Nodo* is_algun_vecino_in_all_no2(int* pos, List* all_nodos, int umbral){
 
 void armar_lista_maestra(int* escala, int n_escala, List* all_nodos, int** matrix, int w, int h){
     for(int e=1; e<n_escala; e++){
+        printf("Revisando umbral %i\n", escala[e]);
         for(int i=0; i<h; i++){
             for(int j=0; j<w; j++){
                 if(matrix[i][j]==escala[e]){
+                    printf("Encontrado pixel, posición [%i][%i]\n", i, j);
                     int* vecinos=NULL;
                     pos_vecinos(matrix, w, h, i, j, &vecinos);
-                    Nodo* chosen = is_algun_vecino_in_all_no2(vecinos, all_nodos, e);
+                    Nodo* chosen = is_algun_vecino_in_all_no2(vecinos, all_nodos, escala[e]);
+                    if(chosen){
+                        printf("Se encontró nodo umbral %i\n", chosen->U);
+                    } else{
+                        printf("No se encontró nodo, se creará uno de umbral %i\n", escala[e]);
+                    }
                     if(chosen){
                         for(int v=0; v<5; v++){
                             if(vecinos[v]>=0){
