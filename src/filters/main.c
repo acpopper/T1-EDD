@@ -36,7 +36,7 @@ int main(int argc, char** argv)
         add_pixel_to_nodo(p, root);
     }
     
-    armar_lista_maestra(escala, n_escala, all_nodos, matrix, image->width, image->height);
+    armar_lista_maestra_version_pro(escala, n_escala, all_nodos, matrix, image->width, image->height);
 
     show_full_list(all_nodos);
     

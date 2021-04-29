@@ -241,9 +241,9 @@ void list2_append(List2* list, int value)
 }
 
 bool pixel_is_in_list2(List2* list2, int num){
-    Pixel* current_pixel = list2->value;    
+    List2* current_pixel = list2;    
     while(current_pixel){
-        if(current_pixel->pos==num){
+        if(current_pixel->value==num){
             return true;
         }
         current_pixel = current_pixel->next;
@@ -255,7 +255,7 @@ void list2_destroy(List2 *list)
 {
   if (list->next)
   {
-    list_destroy(list->next);
+    list2_destroy(list->next);
   }
   free(list);
 }
