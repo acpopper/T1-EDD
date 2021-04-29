@@ -338,11 +338,19 @@ void armar_lista_maestra_version_pro(int* escala, int n_escala, List* all_nodos,
 void desligar_pixel(Nodo* nodo, int pixel){
     Pixel* current_pixel = nodo->pix;
     while(current_pixel){
+        if(current_pixel->pos==pixel){
+            printf("Desligando %i de nodo %i\n", pixel, nodo->U);
+            Pixel* byebye = nodo->pix;
+            nodo->pix=nodo->pix->next;
+            free(byebye);
+            nodo->n_pixeles -=1;
+        }
         if(current_pixel->next && current_pixel->next->pos==pixel){
+            printf("Desligando %i de nodo %i\n", pixel, nodo->U);
             Pixel* byebye = current_pixel->next;
             current_pixel->next=current_pixel->next->next;
             free(byebye);
-            break;
+            nodo->n_pixeles -=1;
         }
         current_pixel=current_pixel->next;
     }
@@ -350,17 +358,24 @@ void desligar_pixel(Nodo* nodo, int pixel){
 }
 
 void de_lista_a_arbol(List* all_nodos){
-    List* nodo_parent = all_nodos;    
-    List* nodo_hijo = all_nodos->next;    
+    printf("Entró a func\n");
+    List* nodo_parent = all_nodos;
+    printf("Nodo padre de esta it. %i\n", nodo_parent->value->U);  
+    List* nodo_hijo = nodo_parent->next;
+    printf("Nodo hijo de esta it. %i\n", nodo_hijo->value->U);
     Pixel* pixel_parent = nodo_parent->value->pix;
     while(pixel_parent){
+        printf("Buscando pixel padre: %i\n", pixel_parent->pos);
         while(nodo_hijo){
             if(nodo_hijo->value->U > nodo_parent->value->U){
                 Pixel* pixel_hijo = nodo_hijo->value->pix;
                 while(pixel_hijo){
-                    if(pixel_parent->pos==pixel_hijo->pos){                        
+                    if(pixel_parent->pos==pixel_hijo->pos){
+                        printf("Padre %i Hijo %i calzan en pix %i\n", nodo_parent->value->U, nodo_hijo->value->U, pixel_hijo->pos);                        
                         ligar_nodos(nodo_parent->value, nodo_hijo->value);
+                        // printf("se va a desligar %i de %i\n", pixel_parent->pos, nodo_parent->value->U);
                         desligar_pixel(nodo_parent->value, pixel_parent->pos);
+                        // printf("Va a entrar nodo hijo %i\n", nodo_hijo->value->U);
                         de_lista_a_arbol(nodo_hijo);
                     }
                     pixel_hijo=pixel_hijo->next;
@@ -386,5 +401,6 @@ void ligar_nodos(Nodo* parent, Nodo* hijo){
         last->next=hijo;
     }
     hijo->parent=parent;
+    printf("Nodo padre %i se ha ligado con %i\n", parent->U, hijo->U);
 }
 

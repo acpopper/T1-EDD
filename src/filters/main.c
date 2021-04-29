@@ -18,16 +18,16 @@ int main(int argc, char** argv)
     
     // obtengo matriz con coordenadas cart.
     int** matrix=matrix_init(image);
-    show_matrix(matrix, image->height, image->width);
+    // show_matrix(matrix, image->height, image->width);
     
     // obtengo escala de los tonos que hay en la foto
     int n_escala;
     int* escala = generar_escala(image, &n_escala);
-    printf("Escala: ");
-    for(int i=0; i<n_escala; i++){
-        printf("%i ", escala[i]);
-    }
-    printf("\n");
+    // printf("Escala: ");
+    // for(int i=0; i<n_escala; i++){
+    //     printf("%i ", escala[i]);
+    // }
+    // printf("\n");
     // nodo inicial, agrego todos los pixeles como LL
     Nodo* root = nodo_init(escala[0]);
     // agrego root a la lista de todos los nodos por haber
@@ -37,8 +37,8 @@ int main(int argc, char** argv)
     }
     
     armar_lista_maestra_version_pro(escala, n_escala, all_nodos, matrix, image->width, image->height);
-    de_lista_a_arbol(all_nodos);
-    // show_full_list(all_nodos);
+    // de_lista_a_arbol(all_nodos);
+    show_full_list(all_nodos);
     
 
     // Creamos una nueva imagen de igual tamaño, para el output
