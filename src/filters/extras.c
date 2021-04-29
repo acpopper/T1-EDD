@@ -144,7 +144,7 @@ void add_pixel_to_nodo(int pos, Nodo* nodo){
 void show_full_list(List* all_nodos){
     List* current_nodo = all_nodos;
     while(current_nodo){
-        printf("Umbral del nodo: %i\n", current_nodo->value->U);
+        printf("Umbral del nodo: %i, cantidad de pixeles: %i\n", current_nodo->value->U, current_nodo->value->n_pixeles);
         Pixel* current_pixel = current_nodo->value->pix;
         while(current_pixel){
             printf("    P: %i\n", current_pixel->pos);
