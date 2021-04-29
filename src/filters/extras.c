@@ -126,6 +126,7 @@ void add_pixel_to_nodo(int pos, Nodo* nodo){
         nodo->n_pixeles+=1;
     }
     else{
+        
         Pixel* current = nodo->pix;
         while (current->next && current->pos!=pos){
             current=current->next;
@@ -285,7 +286,7 @@ Nodo* is_algun_vecino_in_all_no3(List2* elem, List* all_nodos, int umbral){
     return NULL;
 }
 
-void pos_vecinos_version_pro(int** matrix, int w, int h, int posi, int posj, List2* elem){   
+void pos_vecinos_version_pro(int** matrix, int w, int h, int posi, int posj, List2* elem, int e){   
 
     int offsetx[]={1, 0, -1, 0};
     int offsety[]={0, 1, 0, -1};
@@ -294,11 +295,11 @@ void pos_vecinos_version_pro(int** matrix, int w, int h, int posi, int posj, Lis
         if((posi+offsetx[t])<0 || (posi+offsetx[t])>(h-1) || (posj+offsety[t])<0 || (posj+offsety[t])>(w-1)){
             continue;
         } 
-        else if(matrix[posi][posj]<=matrix[posi+offsetx[t]][posj+offsety[t]]){
-                if(!pixel_is_in_list2(elem, w*(posi+offsetx[t])+(posj+offsety[t]))){
-                    list2_append(elem, w*(posi+offsetx[t])+(posj+offsety[t]));
-                    pos_vecinos_version_pro(matrix, w, h, (posi+offsetx[t]), (posj+offsety[t]), elem);
-                }                
+        else if(matrix[posi+offsetx[t]][posj+offsety[t]]>=e){            
+            if(!pixel_is_in_list2(elem, w*(posi+offsetx[t])+(posj+offsety[t]))){
+                list2_append(elem, w*(posi+offsetx[t])+(posj+offsety[t]));
+                pos_vecinos_version_pro(matrix, w, h, (posi+offsetx[t]), (posj+offsety[t]), elem, e);
+            }                
             }
     }
 }
@@ -310,7 +311,7 @@ void armar_lista_maestra_version_pro(int* escala, int n_escala, List* all_nodos,
             for(int j=0; j<w; j++){
                 if(matrix[i][j]==escala[e]){
                     List2* aux = list2_init(w*i+j);
-                    pos_vecinos_version_pro(matrix, w, h, i, j, aux);
+                    pos_vecinos_version_pro(matrix, w, h, i, j, aux, escala[e]);
                     Nodo* chosen = is_algun_vecino_in_all_no3(aux, all_nodos, escala[e]);                    
                     if(chosen){
                         List2* current = aux;

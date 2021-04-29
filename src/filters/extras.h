@@ -46,7 +46,7 @@ void list2_destroy(List2 *list);
 void add_pixel_to_nodo(int pos, Nodo* nodo);
 void show_full_list(List* all_nodos);
 Nodo* is_algun_vecino_in_all_no3(List2* elem, List* all_nodos, int umbral);
-void pos_vecinos_version_pro(int** matrix, int w, int h, int posi, int posj, List2* elem);
+void pos_vecinos_version_pro(int** matrix, int w, int h, int posi, int posj, List2* elem, int e);
 void armar_lista_maestra_version_pro(int* escala, int n_escala, List* all_nodos, int** matrix, int w, int h);
 bool pixel_is_in_list2(List2* list2, int num);
 void desligar_pixel(Nodo* nodo, int pixel);
