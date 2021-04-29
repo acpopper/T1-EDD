@@ -161,7 +161,7 @@ void pos_vecinos(int** matrix, int w, int h, int posi, int posj,int **array)
     
     for (int t = 0; t < 4; t++){
     //  printf("iter %i\n", t);
-        printf("x %i y %i\n", (posi+offsetx[t]), (posj+offsety[t]));
+        // printf("x %i y %i\n", (posi+offsetx[t]), (posj+offsety[t]));
         if((posi+offsetx[t])<0 || (posi+offsetx[t])>(h-1) || (posj+offsety[t])<0 || (posj+offsety[t])>(w-1)){
             (*array)[t] = -1;
             // printf("if vecino %i\n", (*array)[t]);
@@ -175,7 +175,7 @@ void pos_vecinos(int** matrix, int w, int h, int posi, int posj,int **array)
             // printf("else vecino %i\n", matrix[posi+offsetx[t]][posj+offsety[t]]);
         }
     }
-    printf("x %i y %i\n", posi, posj);
+    // printf("x %i y %i\n", posi, posj);
     (*array)[4]=w*(posi)+(posj);
     
     // for(int p=0;p<5;p++){
@@ -256,19 +256,23 @@ void armar_lista_maestra(int* escala, int n_escala, List* all_nodos, int** matri
     for(int e=1; e<n_escala; e++){
         for(int i=0; i<h; i++){
             for(int j=0; j<w; j++){
-                if(matrix[i][j]==e){
+                if(matrix[i][j]==escala[e]){
                     int* vecinos=NULL;
                     pos_vecinos(matrix, w, h, i, j, &vecinos);
                     Nodo* chosen = is_algun_vecino_in_all_no2(vecinos, all_nodos, e);
                     if(chosen){
                         for(int v=0; v<5; v++){
-                            add_pixel_to_nodo(vecinos[v], chosen);
+                            if(vecinos[v]>=0){
+                                add_pixel_to_nodo(vecinos[v], chosen);
+                            }
                         }
                     }
                     else{
-                        Nodo* new = nodo_init(e);
+                        Nodo* new = nodo_init(escala[e]);
                         for(int v=0; v<5; v++){
-                            add_pixel_to_nodo(vecinos[v], new);
+                            if(vecinos[v]>=0){
+                                add_pixel_to_nodo(vecinos[v], new);
+                            }
                         }
                         list_append(all_nodos, new);
                     }

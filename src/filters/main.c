@@ -17,13 +17,17 @@ int main(int argc, char** argv)
     Image* image = img_png_read_from_file(argv[1]);
     
     // obtengo matriz con coordenadas cart.
-    int** m=matrix_init(image);
-    show_matrix(m, image->height, image->width);
+    int** matrix=matrix_init(image);
+    show_matrix(matrix, image->height, image->width);
     
     // obtengo escala de los tonos que hay en la foto
     int n_escala;
     int* escala = generar_escala(image, &n_escala);
-
+    printf("Escala: ");
+    for(int i=0; i<n_escala; i++){
+        printf("%i ", escala[i]);
+    }
+    printf("\n");
     // nodo inicial, agrego todos los pixeles como LL
     Nodo* root = nodo_init(escala[0]);
     // agrego root a la lista de todos los nodos por haber
@@ -32,8 +36,10 @@ int main(int argc, char** argv)
         add_pixel_to_nodo(p, root);
     }
     
+    armar_lista_maestra(escala, n_escala, all_nodos, matrix, image->width, image->height);
+
     show_full_list(all_nodos);
-    printf("pixeles totales: %i\n", all_nodos->value->n_pixeles);
+    
 
     // Creamos una nueva imagen de igual tamaño, para el output
     Image* new_img = calloc(1, sizeof(Image));
