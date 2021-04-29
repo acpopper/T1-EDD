@@ -24,6 +24,7 @@ struct pixel {
 typedef struct list {
   Nodo* value;
   struct list* next;
+  struct list* prev;
 } List;
 
 

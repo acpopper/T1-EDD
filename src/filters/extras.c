@@ -203,7 +203,8 @@ List* list_init(Nodo* nodo)
 
   *list = (List) {
     .value = nodo,
-    .next = NULL, 
+    .next = NULL,
+    .prev = NULL 
   };
   return list;
 }
@@ -229,6 +230,7 @@ void list_append(List* list, Nodo* nodo)
   List *new_list = list_init(nodo);
 
   last->next = new_list;
+  new_list->prev=last;
 }
 
 void list2_append(List2* list, int value)
@@ -340,14 +342,14 @@ void desligar_pixel(Nodo* nodo, int pixel){
     Pixel* current_pixel = nodo->pix;
     while(current_pixel){
         if(current_pixel->pos==pixel){
-            printf("Desligando %i de nodo %i\n", pixel, nodo->U);
+            // printf("Desligando %i de nodo %i\n", pixel, nodo->U);
             Pixel* byebye = nodo->pix;
             nodo->pix=nodo->pix->next;
             free(byebye);
             nodo->n_pixeles -=1;
         }
         if(current_pixel->next && current_pixel->next->pos==pixel){
-            printf("Desligando %i de nodo %i\n", pixel, nodo->U);
+            // printf("Desligando %i de nodo %i\n", pixel, nodo->U);
             Pixel* byebye = current_pixel->next;
             current_pixel->next=current_pixel->next->next;
             free(byebye);
@@ -359,49 +361,59 @@ void desligar_pixel(Nodo* nodo, int pixel){
 }
 
 void de_lista_a_arbol(List* all_nodos){
-    printf("Entró a func\n");
-    List* nodo_parent = all_nodos;
-    printf("Nodo padre de esta it. %i\n", nodo_parent->value->U);  
-    List* nodo_hijo = nodo_parent->next;
-    printf("Nodo hijo de esta it. %i\n", nodo_hijo->value->U);
-    Pixel* pixel_parent = nodo_parent->value->pix;
-    while(pixel_parent){
-        printf("Buscando pixel padre: %i\n", pixel_parent->pos);
-        while(nodo_hijo){
-            if(nodo_hijo->value->U > nodo_parent->value->U){
-                Pixel* pixel_hijo = nodo_hijo->value->pix;
-                while(pixel_hijo){
-                    if(pixel_parent->pos==pixel_hijo->pos){
-                        printf("Padre %i Hijo %i calzan en pix %i\n", nodo_parent->value->U, nodo_hijo->value->U, pixel_hijo->pos);                        
-                        ligar_nodos(nodo_parent->value, nodo_hijo->value);
-                        // printf("se va a desligar %i de %i\n", pixel_parent->pos, nodo_parent->value->U);
-                        desligar_pixel(nodo_parent->value, pixel_parent->pos);
-                        // printf("Va a entrar nodo hijo %i\n", nodo_hijo->value->U);
-                        de_lista_a_arbol(nodo_hijo);
-                    }
-                    pixel_hijo=pixel_hijo->next;
-                }
-            }
-        nodo_hijo=nodo_hijo->next;
-        }
-        pixel_parent=pixel_parent->next;
+    List* last = all_nodos;
+    while(last->next){
+        last=last->next;
+    }
+    recursive_lista_a_arbol(last);
+}
 
+void recursive_lista_a_arbol(List* nodo_lista){
+    List* current_nodo_lista = nodo_lista;
+    List* nodo_prev = nodo_lista->prev;
+    if(current_nodo_lista->prev){
+        Pixel* current_pixel = current_nodo_lista->value->pix;
+        while(current_pixel){
+            Pixel* nodo_prev_pixels = nodo_prev->value->pix;
+            while(nodo_prev_pixels){
+
+                nodo_prev_pixels=nodo_prev_pixels->next;
+            }
+            
+
+            current_pixel=current_pixel->next;
+        }
     }
 }
 
 
+
 void ligar_nodos(Nodo* parent, Nodo* hijo){
-    if(!parent->head){
-        parent->head=hijo;
-    }
-    else{
-        Nodo* last = parent->head;
-        while(last->next){
-            last=last->next;
+    if(!hijo->parent){
+        if(!parent->head){
+            parent->head=hijo;
         }
-        last->next=hijo;
-    }
+        else{
+            Nodo* last = parent->head;
+            while(last->next){
+                last=last->next;
+            }
+            last->next=hijo;
+        }
     hijo->parent=parent;
-    printf("Nodo padre %i se ha ligado con %i\n", parent->U, hijo->U);
+    }
+    else if(hijo->parent->U<parent->U){
+        if(!parent->head){
+            parent->head=hijo;
+        }
+        else{
+            Nodo* last = parent->head;
+            while(last->next){
+                last=last->next;
+            }
+            last->next=hijo;
+        }
+    hijo->parent=parent;
+    }
 }
 
