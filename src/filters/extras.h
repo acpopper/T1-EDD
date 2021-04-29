@@ -27,6 +27,11 @@ typedef struct list {
 } List;
 
 
+typedef struct list2 {
+  int value;
+  struct list2* next;
+} List2;
+
 Nodo* nodo_init(int U);
 Pixel* pixel_init(int pos);
 int** matrix_init(Image* image);
