@@ -39,7 +39,8 @@ int main(int argc, char** argv)
     armar_lista_maestra_version_pro(escala, n_escala, all_nodos, matrix, image->width, image->height);
     de_lista_a_arbol(all_nodos);
     show_full_list(all_nodos);
-    
+    // Nodo* max_tree = all_nodos->value;
+
 
     // Creamos una nueva imagen de igual tamaño, para el output
     Image* new_img = calloc(1, sizeof(Image));

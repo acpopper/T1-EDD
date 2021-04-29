@@ -364,6 +364,8 @@ void de_lista_a_arbol(List* all_nodos){
         last=last->next;
     }
     iterative_lista_a_arbol(last);
+    all_nodos->value->n_pixeles-=1;
+    all_nodos->value->pix=all_nodos->value->pix->next;
 }
 
 void iterative_lista_a_arbol(List* nodo_lista){
@@ -371,11 +373,11 @@ void iterative_lista_a_arbol(List* nodo_lista){
     while(current_nodo_lista){
         List* nodo_prev = nodo_lista->prev;
         while(nodo_prev && nodo_prev->value->U>=current_nodo_lista->value->U){
-            printf("Current U %i, prev U %i\n", current_nodo_lista->value->U, nodo_prev->value->U);
+            // printf("Current U %i, prev U %i\n", current_nodo_lista->value->U, nodo_prev->value->U);
             nodo_prev=nodo_prev->prev;
         }
         while(nodo_prev){
-            printf("Entró\n");
+            
             Pixel* pix_chico = current_nodo_lista->value->pix;
             while(pix_chico){
                 Pixel* compare = nodo_prev->value->pix;
@@ -393,8 +395,6 @@ void iterative_lista_a_arbol(List* nodo_lista){
         }
         current_nodo_lista=current_nodo_lista->prev;
     }
-    
-    
 }
 
 
