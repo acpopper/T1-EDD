@@ -371,19 +371,29 @@ void de_lista_a_arbol(List* all_nodos){
 void recursive_lista_a_arbol(List* nodo_lista){
     List* current_nodo_lista = nodo_lista;
     List* nodo_prev = nodo_lista->prev;
-    if(current_nodo_lista->prev){
-        Pixel* current_pixel = current_nodo_lista->value->pix;
-        while(current_pixel){
-            Pixel* nodo_prev_pixels = nodo_prev->value->pix;
-            while(nodo_prev_pixels){
-
-                nodo_prev_pixels=nodo_prev_pixels->next;
-            }
-            
-
-            current_pixel=current_pixel->next;
-        }
+    while(nodo_prev && nodo_prev->value->U>=current_nodo_lista->value->U){
+        nodo_prev=nodo_prev->prev;
     }
+    while(nodo_prev){
+        Pixel* pix_chico = current_nodo_lista->value->pix;
+        while(pix_chico){
+            Pixel* compare = nodo_prev->value->pix;
+            while(compare){
+                if(pix_chico->pos==compare->pos){
+                    ligar_nodos(nodo_prev->value, current_nodo_lista->value);
+                    desligar_pixel(nodo_prev, pix_chico->pos);
+                }
+                compare=compare->next;
+            }
+            pix_chico=pix_chico->next;
+        }
+        
+        nodo_prev=nodo_prev->prev;
+    }
+    if(nodo_prev){
+        recursive_lista_a_arbol(current_nodo_lista->prev);
+    }
+    
 }
 
 
