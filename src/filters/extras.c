@@ -341,58 +341,59 @@ void armar_lista_maestra_version_pro(int* escala, int n_escala, List* all_nodos,
 void desligar_pixel(Nodo* nodo, int pixel){
     Pixel* current_pixel = nodo->pix;
     while(current_pixel){
-        if(current_pixel->pos==pixel){
-            // printf("Desligando %i de nodo %i\n", pixel, nodo->U);
-            Pixel* byebye = nodo->pix;
+        if(nodo->pix && nodo->pix->pos==pixel){
             nodo->pix=nodo->pix->next;
-            free(byebye);
+            free(nodo->pix);
             nodo->n_pixeles -=1;
         }
-        if(current_pixel->next && current_pixel->next->pos==pixel){
-            // printf("Desligando %i de nodo %i\n", pixel, nodo->U);
-            Pixel* byebye = current_pixel->next;
+        else if(current_pixel->next && current_pixel->next->pos==pixel){
+            Pixel* aux = current_pixel->next;
             current_pixel->next=current_pixel->next->next;
-            free(byebye);
+            free(aux);
             nodo->n_pixeles -=1;
         }
+        
         current_pixel=current_pixel->next;
     }
     
-}
+} 
 
 void de_lista_a_arbol(List* all_nodos){
     List* last = all_nodos;
     while(last->next){
         last=last->next;
     }
-    recursive_lista_a_arbol(last);
+    iterative_lista_a_arbol(last);
 }
 
-void recursive_lista_a_arbol(List* nodo_lista){
+void iterative_lista_a_arbol(List* nodo_lista){
     List* current_nodo_lista = nodo_lista;
-    List* nodo_prev = nodo_lista->prev;
-    while(nodo_prev && nodo_prev->value->U>=current_nodo_lista->value->U){
-        nodo_prev=nodo_prev->prev;
-    }
-    while(nodo_prev){
-        Pixel* pix_chico = current_nodo_lista->value->pix;
-        while(pix_chico){
-            Pixel* compare = nodo_prev->value->pix;
-            while(compare){
-                if(pix_chico->pos==compare->pos){
-                    ligar_nodos(nodo_prev->value, current_nodo_lista->value);
-                    desligar_pixel(nodo_prev, pix_chico->pos);
-                }
-                compare=compare->next;
-            }
-            pix_chico=pix_chico->next;
+    while(current_nodo_lista){
+        List* nodo_prev = nodo_lista->prev;
+        while(nodo_prev && nodo_prev->value->U>=current_nodo_lista->value->U){
+            printf("Current U %i, prev U %i\n", current_nodo_lista->value->U, nodo_prev->value->U);
+            nodo_prev=nodo_prev->prev;
         }
-        
-        nodo_prev=nodo_prev->prev;
+        while(nodo_prev){
+            printf("Entró\n");
+            Pixel* pix_chico = current_nodo_lista->value->pix;
+            while(pix_chico){
+                Pixel* compare = nodo_prev->value->pix;
+                while(compare){
+                    if(pix_chico->pos==compare->pos){
+                        ligar_nodos(nodo_prev->value, current_nodo_lista->value);
+                        desligar_pixel(nodo_prev->value, pix_chico->pos);
+                    }
+                    compare=compare->next;
+                }
+                pix_chico=pix_chico->next;
+            }
+            
+            nodo_prev=nodo_prev->prev;
+        }
+        current_nodo_lista=current_nodo_lista->prev;
     }
-    if(nodo_prev){
-        recursive_lista_a_arbol(current_nodo_lista->prev);
-    }
+    
     
 }
 
