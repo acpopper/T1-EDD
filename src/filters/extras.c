@@ -336,10 +336,9 @@ void armar_lista_maestra_version_pro(int* escala, int n_escala, List* all_nodos,
 }
 
 void desligar_pixel(Nodo* nodo, int pixel){
-    Nodo* current_nodo = nodo;
     Pixel* current_pixel = nodo->pix;
     while(current_pixel){
-        if(current_pixel->next->pos==pixel){
+        if(current_pixel->next && current_pixel->next->pos==pixel){
             Pixel* byebye = current_pixel->next;
             current_pixel->next=current_pixel->next->next;
             free(byebye);
@@ -351,21 +350,26 @@ void desligar_pixel(Nodo* nodo, int pixel){
 }
 
 void de_lista_a_arbol(List* all_nodos){
-    List* nodo_parent = all_nodos;
-    List* nodo_hijo = all_nodos->next;
+    List* nodo_parent = all_nodos;    
+    List* nodo_hijo = all_nodos->next;    
     Pixel* pixel_parent = nodo_parent->value->pix;
     while(pixel_parent){
         while(nodo_hijo){
             if(nodo_hijo->value->U > nodo_parent->value->U){
                 Pixel* pixel_hijo = nodo_hijo->value->pix;
                 while(pixel_hijo){
-                    if(pixel_parent->pos==pixel_hijo->pos){
+                    if(pixel_parent->pos==pixel_hijo->pos){                        
                         ligar_nodos(nodo_parent->value, nodo_hijo->value);
                         desligar_pixel(nodo_parent->value, pixel_parent->pos);
+                        de_lista_a_arbol(nodo_hijo);
                     }
+                    pixel_hijo=pixel_hijo->next;
                 }
             }
+        nodo_hijo=nodo_hijo->next;
         }
+        pixel_parent=pixel_parent->next;
+
     }
 }
 

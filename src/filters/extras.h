@@ -50,3 +50,5 @@ void pos_vecinos_version_pro(int** matrix, int w, int h, int posi, int posj, Lis
 void armar_lista_maestra_version_pro(int* escala, int n_escala, List* all_nodos, int** matrix, int w, int h);
 bool pixel_is_in_list2(List2* list2, int num);
 void desligar_pixel(Nodo* nodo, int pixel);
+void de_lista_a_arbol(List* all_nodos);
+void ligar_nodos(Nodo* parent, Nodo* hijo);
