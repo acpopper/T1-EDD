@@ -40,7 +40,7 @@ int main(int argc, char** argv)
     de_lista_a_arbol(all_nodos);
     // show_full_list(all_nodos);
     Nodo* max_tree = all_nodos->value;
-    print_max_tree(max_tree, 0);
+    // print_max_tree(max_tree, 0);
 
 
     // Creamos una nueva imagen de igual tamaño, para el output
@@ -79,6 +79,8 @@ int main(int argc, char** argv)
         /* ------------- POR IMPLEMENTAR -------------- */
         /* Aqui debes implementar el filtro de area y   */
         /* guardar la imagen filtrada en new_img.       */
+        area_filter(max_tree, min_area, threshold);
+        tree_to_array(max_tree, new_img->pixels);
 
         
     }
