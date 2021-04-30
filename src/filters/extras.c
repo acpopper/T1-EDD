@@ -437,3 +437,17 @@ void print_max_tree(Nodo* nodo, int n){
         current = current->next;
     }
 }
+
+void tree_to_array(Nodo* arbol, int* arr){
+    Pixel* current_pixel = arbol->pix;
+    while(current_pixel){
+        arr[current_pixel->pos]=arbol->U;
+        current_pixel=current_pixel->next;
+    }
+
+    Nodo* current = arbol->head;
+    while (current){
+        tree_to_array(current, arr);
+        current = current->next;
+    }
+}

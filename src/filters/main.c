@@ -52,6 +52,13 @@ int main(int argc, char** argv)
         .pixels = calloc(image->pixel_count, sizeof(int))
     };
 
+
+    // tree_to_array(max_tree, new_img->pixels);
+    // for(int i=0; i<new_img->pixel_count; i++){
+    //     printf("%i ", new_img->pixels[i]);
+    // }
+    // printf("\n");
+
     // Filtramos el arbol y lo guardamos en la imagen, segun el filtro que corresponda
     if (! strcmp("delta", argv[3]))
     {
@@ -62,7 +69,7 @@ int main(int argc, char** argv)
         /* Aqui debes implementar el filtro delta y     */
         /* guardar la imagen filtrada en new_img.       */
 
-    }
+    } 
     else if (! strcmp("area", argv[3]))
     {
         // Filtro AREA-COLOR
@@ -72,6 +79,7 @@ int main(int argc, char** argv)
         /* ------------- POR IMPLEMENTAR -------------- */
         /* Aqui debes implementar el filtro de area y   */
         /* guardar la imagen filtrada en new_img.       */
+
         
     }
 

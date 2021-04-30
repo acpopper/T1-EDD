@@ -55,3 +55,4 @@ void de_lista_a_arbol(List* all_nodos);
 void ligar_nodos(Nodo* parent, Nodo* hijo);
 void iterative_lista_a_arbol(List* nodo_lista);
 void print_max_tree(Nodo* nodo, int n);
+void tree_to_array(Nodo* arbol, int* arr);
