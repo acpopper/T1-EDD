@@ -428,3 +428,12 @@ void ligar_nodos(Nodo* parent, Nodo* hijo){
     }
 }
 
+void print_max_tree(Nodo* nodo, int n){
+    printf("%*sNodo: %i, n_pix: %i\n", n, "", nodo->U, nodo->n_pixeles);
+    Nodo* current = nodo->head;
+  
+    while (current){
+        print_max_tree(current, n+4);
+        current = current->next;
+    }
+}
