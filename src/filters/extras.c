@@ -453,9 +453,6 @@ void tree_to_array(Nodo* arbol, int* arr){
 }
 
 void area_filter(Nodo* max_tree, int A, int G){
-    
-    printf("Nodo umbral %i\n", max_tree->U);
-    printf("Cantidad de pixeles %i\n", get_pixeles_vecindario(max_tree, 0));
     if(max_tree->U<=G || get_pixeles_vecindario(max_tree, 0)<=A){
        if(!max_tree->parent){
            max_tree->U=0;
