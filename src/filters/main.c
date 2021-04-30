@@ -68,6 +68,9 @@ int main(int argc, char** argv)
         /* ------------- POR IMPLEMENTAR -------------- */
         /* Aqui debes implementar el filtro delta y     */
         /* guardar la imagen filtrada en new_img.       */
+        delta_filter(max_tree, max_delta);
+        tree_to_array(max_tree, new_img->pixels);
+
 
     } 
     else if (! strcmp("area", argv[3]))

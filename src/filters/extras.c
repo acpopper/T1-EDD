@@ -477,3 +477,32 @@ int get_pixeles_vecindario(Nodo* maxtree, int p){
     }
     return p;
 }
+
+void delta_filter(Nodo* max_tree, int d){
+    if(formula_delta(max_tree)>d){
+        max_tree->U=max_tree->parent->U;
+    }
+
+
+    Nodo* current = max_tree->head;
+    while (current){
+        delta_filter(current, d);
+        current = current->next;
+    }
+}
+
+float formula_delta(Nodo* nodo){
+    if(!nodo->parent){
+        return 0;
+    }
+    else{
+        float hijo = get_pixeles_vecindario(nodo, 0);        
+        float padre = get_pixeles_vecindario(nodo->parent, 0);
+        float div = (float)((padre-hijo)/padre);
+        return (div);
+    }
+
+    
+}
+
+

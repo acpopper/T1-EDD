@@ -58,3 +58,5 @@ void print_max_tree(Nodo* nodo, int n);
 void tree_to_array(Nodo* arbol, int* arr);
 void area_filter(Nodo* max_tree, int A, int G);
 int get_pixeles_vecindario(Nodo* maxtree, int p);
+void delta_filter(Nodo* max_tree, int d);
+float formula_delta(Nodo* nodo);
